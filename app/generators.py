@@ -1,19 +1,23 @@
+from google import genai
 import streamlit as st
-import google.generativeai as genai
 
-genai.configure(api_key="YOUR_GEMINI_API_KEY")
-
-
-model = genai.GenerativeModel("gemini-2.5-flash")
+client = genai.Client(
+    api_key=st.secrets["GEMINI_API_KEY"]
+)
 
 def generate_test_cases(requirement):
-    response = model.generate_content(
-        f"Generate detailed QA test cases for: {requirement}"
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=f"Generate detailed QA test cases for: {requirement}"
     )
+
     return response.text
 
+
 def generate_playwright_script(requirement):
-    response = model.generate_content(
-        f"Generate a Playwright Python script for: {requirement}"
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=f"Generate a Playwright Python script for: {requirement}"
     )
+
     return response.text
