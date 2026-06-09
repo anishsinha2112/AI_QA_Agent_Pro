@@ -6,18 +6,45 @@ client = genai.Client(
 )
 
 def generate_test_cases(requirement):
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=f"Generate detailed QA test cases for: {requirement}"
-    )
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash-lite",
+            contents=f"""
+            Generate detailed QA test cases in a table format with:
+            - Test Case ID
+            - Test Scenario
+            - Test Steps
+            - Expected Result
+            - Priority
 
-    return response.text
+            Requirement:
+            {requirement}
+            """
+        )
+
+        return response.text
+
+    except Exception as e:
+        return f"⚠️ Gemini Service Busy. Please try again in a few minutes.\n\nError: {str(e)}"
 
 
 def generate_playwright_script(requirement):
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=f"Generate a Playwright Python script for: {requirement}"
-    )
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash-lite",
+            contents=f"""
+            Generate a complete Playwright Python automation script for:
+            {requirement}
 
-    return response.text
+            Include:
+            - Imports
+            - Browser Launch
+            - Assertions
+            - Comments
+            """
+        )
+
+        return response.text
+
+    except Exception as e:
+        return f"⚠️ Unable to generate Playwright script.\n\nError: {str(e)}"

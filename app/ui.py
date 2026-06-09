@@ -50,3 +50,9 @@ with tab2:
 
 st.markdown("---")
 st.caption("Created by Anish Sinha | AI QA Agent")
+
+with st.spinner("Generating test cases..."):
+    result = generate_test_cases(requirement)
+
+st.success("Generated successfully!")
+st.write(result)
