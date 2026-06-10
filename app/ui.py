@@ -1,4 +1,5 @@
 import streamlit as st
+from url_scanner import scan_website
 from generators import generate_test_cases, generate_playwright_script
 from analyzer import classify_failure
 
@@ -96,23 +97,19 @@ with tab2:
 
             with st.spinner("Scanning Website..."):
 
-                # Future Feature
-                # result = scan_website(url)
+                result = scan_website(url)
 
-                result = """
-Website Scanner Coming Soon 🚀
+            st.success("Website Analysis Completed!")
 
-Future Features:
-✔ Detect Forms
-✔ Detect Buttons
-✔ Detect Links
-✔ Generate Test Cases
-✔ Generate Playwright Scripts
-"""
+            if "error" in result:
+                st.error(result["error"])
+            else:
+                st.write("### Scan Results")
 
-            st.success("Analysis Complete!")
-
-            st.write(result)
+                st.metric("Forms", result["forms"])
+                st.metric("Buttons", result["buttons"])
+                st.metric("Links", result["links"])
+                st.metric("Inputs", result["inputs"])
 
         else:
             st.warning("Please enter a URL.")
