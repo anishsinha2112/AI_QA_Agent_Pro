@@ -3,3 +3,5 @@ google-genai
 playwright
 pytest
 pandas
+requests
+beautifulsoup4
