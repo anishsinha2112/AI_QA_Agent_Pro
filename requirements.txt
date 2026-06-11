@@ -1,7 +1,7 @@
 streamlit
 google-genai
+playwright
+pytest
+pandas
 requests
 beautifulsoup4
-playwright
-pandas
-pytest
