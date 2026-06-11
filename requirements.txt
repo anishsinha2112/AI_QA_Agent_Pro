@@ -1,6 +1,7 @@
 streamlit
-openai
+google-genai
+requests
+beautifulsoup4
 playwright
-pytest
 pandas
-python-dotenv
+pytest
