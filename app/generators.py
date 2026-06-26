@@ -1,50 +1,91 @@
-from google import genai
-import streamlit as st
+import time
+from gemini_client import client
 
-client = genai.Client(
-    api_key=st.secrets["GEMINI_API_KEY"]
+
+
+# Generate Test Cases
+def generate_test_cases(requirement):
+
+    for attempt in range(3):
+
+        try:
+
+            response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=f"""
+Generate detailed QA test cases in a table format with:
+
+- Test Case ID
+- Test Scenario
+- Test Steps
+- Expected Result
+- Priority
+
+Requirement:
+{requirement}
+"""
 )
 
-def generate_test_cases(requirement):
-    try:
-        response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
-            contents=f"""
-            Generate detailed QA test cases in a table format with:
-            - Test Case ID
-            - Test Scenario
-            - Test Steps
-            - Expected Result
-            - Priority
+            return response.text
 
-            Requirement:
-            {requirement}
-            """
-        )
+        except Exception as e:
 
-        return response.text
+            if attempt < 2:
+                time.sleep(3)
 
-    except Exception as e:
-        return f"⚠️ Gemini Service Busy. Please try again in a few minutes.\n\nError: {str(e)}"
+            else:
+                return f"""⚠️ Gemini Service Busy
+
+Google AI is experiencing high demand.
+
+Please try again after 30 seconds.
+
+Technical Error:
+{str(e)}
+"""
 
 
+# Generate Playwright Script
 def generate_playwright_script(requirement):
-    try:
-        response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
-            contents=f"""
-            Generate a complete Playwright Python automation script for:
-            {requirement}
 
-            Include:
-            - Imports
-            - Browser Launch
-            - Assertions
-            - Comments
-            """
+    try:
+
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=f"""
+Generate a complete Playwright Python automation script for:
+
+{requirement}
+
+Include:
+- Imports
+- Browser Launch
+- Assertions
+- Comments
+"""
         )
 
         return response.text
 
     except Exception as e:
-        return f"⚠️ Unable to generate Playwright script.\n\nError: {str(e)}"
+       error = str(e)
+
+    if "RESOURCE_EXHAUSTED" in error:
+        return """
+⚠️ Gemini API quota reached.
+
+Please wait a few minutes and try again.
+
+If the problem continues:
+• Create a new Gemini project
+• Or enable billing
+"""
+
+    if "UNAVAILABLE" in error:
+        return """
+⚠️ Gemini servers are currently busy.
+
+Please try again in 30–60 seconds.
+"""
+
+    return f"Error:\n{error}"

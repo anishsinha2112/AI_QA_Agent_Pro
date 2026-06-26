@@ -1,7 +1,15 @@
 import streamlit as st
-from url_scanner import scan_website
+from url_scanner import (
+    scan_website,
+    generate_website_test_cases,
+    generate_playwright_from_website)
 from generators import generate_test_cases, generate_playwright_script
 from analyzer import classify_failure
+
+st.write("Scanner Loaded")
+st.write(scan_website)
+st.write(generate_website_test_cases)
+st.write(generate_playwright_from_website)
 
 # Optional - only after creating url_scanner.py
 # from url_scanner import scan_website
@@ -91,29 +99,76 @@ with tab2:
         placeholder="https://example.com"
     )
 
-    if st.button("Analyze Website"):
+    # Website Scan
+    if st.button("🔍 Analyze Website"):
 
         if url:
 
             with st.spinner("Scanning Website..."):
 
-                result = scan_website(url)
+                scan_result = scan_website(url)
 
-            st.success("Website Analysis Completed!")
+            st.success("Website Scan Completed!")
 
-            if "error" in result:
-                st.error(result["error"])
-            else:
-                st.write("### Scan Results")
-
-                st.metric("Forms", result["forms"])
-                st.metric("Buttons", result["buttons"])
-                st.metric("Links", result["links"])
-                st.metric("Inputs", result["inputs"])
+            st.json(scan_result)
 
         else:
             st.warning("Please enter a URL.")
 
+    # AI Test Cases
+    if st.button("📝 Generate Test Cases From Website"):
+
+        if url:
+
+            with st.spinner("Generating AI Test Cases..."):
+
+                scan_result = scan_website(url)
+
+                test_cases = generate_website_test_cases(
+                    scan_result
+                )
+
+            st.success("Test Cases Generated!")
+
+            st.write(test_cases)
+
+            st.download_button(
+                label="📥 Download Test Cases",
+                data=test_cases,
+                file_name="website_test_cases.txt",
+                mime="text/plain"
+            )
+
+        else:
+            st.warning("Please enter a URL.")
+
+    # AI Playwright Script
+    if st.button("⚡ Generate Playwright Script From Website"):
+
+        if url:
+
+            with st.spinner("Generating Playwright Script..."):
+
+                scan_result = scan_website(url)
+
+                script = generate_playwright_from_website(
+                    url,
+                    scan_result
+                )
+
+            st.success("Playwright Script Generated!")
+
+            st.code(script, language="python")
+
+            st.download_button(
+                label="📥 Download Playwright Script",
+                data=script,
+                file_name="generated_playwright.py",
+                mime="text/plain"
+            )
+
+        else:
+            st.warning("Please enter a URL.")
 # ---------------------------------------------------
 # TAB 3 - FAILURE ANALYSIS
 # ---------------------------------------------------
