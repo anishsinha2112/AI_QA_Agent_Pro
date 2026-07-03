@@ -8,7 +8,7 @@ import streamlit as st
 # API URL
 # ==========================================================
 
-API_URL = st.secrets["https://ai-qa-agent-pro.onrender.com"]
+API_URL = st.secrets["API_URL"]
 
 # ==========================================================
 # Add Project Root
