@@ -1,12 +1,19 @@
-import streamlit as st
-import requests
 import os
 import sys
 
-API_URL = "http://127.0.0.1:8000"
-API_URL = "https://ai-qa-agent-api.onrender.com"
+import requests
+import streamlit as st
 
-# Add project root to Python path
+# ==========================================================
+# API URL
+# ==========================================================
+
+API_URL = st.secrets["https://ai-qa-agent-pro.onrender.com"]
+
+# ==========================================================
+# Add Project Root
+# ==========================================================
+
 PROJECT_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "..")
 )
@@ -14,10 +21,14 @@ PROJECT_ROOT = os.path.abspath(
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
+# ==========================================================
+# Backend Imports
+# ==========================================================
+
 from app.backend.url_scanner import (
     scan_website,
     generate_website_test_cases,
-    generate_playwright_from_website
+    generate_playwright_from_website,
 )
 
 from app.backend.analyzer import classify_failure
