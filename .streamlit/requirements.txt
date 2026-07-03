@@ -1,7 +1,11 @@
 streamlit
+fastapi
+uvicorn
 google-genai
 requests
 beautifulsoup4
 playwright
 pytest
 pandas
+python-dotenv
+pydantic
