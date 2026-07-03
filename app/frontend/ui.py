@@ -3,6 +3,9 @@ import requests
 import os
 import sys
 
+API_URL = "http://127.0.0.1:8000"
+API_URL = "https://ai-qa-agent-api.onrender.com"
+
 # Add project root to Python path
 PROJECT_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "..")
@@ -77,13 +80,10 @@ with tab1:
                     try:
 
                         response = requests.post(
-                            "http://127.0.0.1:8000/generate-testcases",
-                            json={
-                                "requirement": requirement
-                            },
-                            timeout=120
+                         f"{API_URL}/generate-testcases",
+                         json={"requirement": requirement},
+                         timeout=120
                         )
-
                         if response.status_code == 200:
 
                             result = response.json()["result"]
@@ -119,7 +119,7 @@ with tab1:
                     try:
 
                         response = requests.post(
-                            "http://127.0.0.1:8000/generate-playwright",
+                            f"{API_URL}/generate-playwright",
                             json={
                                 "requirement": requirement
                             },
@@ -281,7 +281,7 @@ with tab4:
                 try:
 
                     response = requests.post(
-                        "http://127.0.0.1:8000/generate-test-strategy",
+                        f"{API_URL}/generate-test-strategy",
                         json={
                             "requirement": strategy_requirement
                         },
