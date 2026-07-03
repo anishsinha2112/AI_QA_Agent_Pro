@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from gemini_client import client
-
+from .gemini_client import client
 
 
 
