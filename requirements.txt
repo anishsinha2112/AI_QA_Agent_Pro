@@ -7,5 +7,5 @@ beautifulsoup4
 playwright
 pytest
 pandas
-python-dotenv
 pydantic
+python-dotenv
