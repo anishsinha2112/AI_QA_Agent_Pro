@@ -1,6 +1,7 @@
 from io import BytesIO
 
 from docx import Document
+from openpyxl import Workbook
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 
@@ -44,6 +45,34 @@ def export_to_pdf(title: str, content: str):
     ]
 
     document.build(story)
+
+    buffer.seek(0)
+
+    return buffer
+
+# ==========================================================
+# Excel Export
+# ==========================================================
+
+def export_to_excel(title: str, content: str):
+
+    workbook = Workbook()
+
+    sheet = workbook.active
+
+    sheet.title = "AI QA Output"
+
+    # Title
+    sheet.append([title])
+    sheet.append([])
+
+    # Write each line into Excel
+    for line in content.split("\n"):
+        sheet.append([line])
+
+    buffer = BytesIO()
+
+    workbook.save(buffer)
 
     buffer.seek(0)
 

@@ -1,6 +1,5 @@
 import os
 import sys
-
 import requests
 import streamlit as st
 
@@ -33,6 +32,11 @@ from app.backend.url_scanner import (
 
 from app.backend.analyzer import classify_failure
 
+from app.backend.export_utils import (
+    export_to_pdf,
+    export_to_docx,
+    export_to_excel,
+)
 
 # ==========================================================
 # PAGE CONFIG
@@ -45,8 +49,9 @@ st.set_page_config(
 )
 
 st.title("🤖 AI QA Agent")
-st.caption("AI Powered Test Case, Automation Script & Failure Analysis Tool")
-
+st.caption(
+    "AI Powered Test Case, Automation Script & Failure Analysis Tool"
+)
 
 # ==========================================================
 # TABS
@@ -58,7 +63,6 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "🐞 Failure Analysis",
     "📋 Test Strategy"
 ])
-
 
 # ==========================================================
 # TAB 1 - TEST GENERATION
@@ -76,9 +80,9 @@ with tab1:
 
     col1, col2 = st.columns(2)
 
-    # --------------------------------------------------
+    # ------------------------------------------------------
     # Generate Test Cases
-    # --------------------------------------------------
+    # ------------------------------------------------------
 
     with col1:
 
@@ -91,17 +95,63 @@ with tab1:
                     try:
 
                         response = requests.post(
-                         f"{API_URL}/generate-testcases",
-                         json={"requirement": requirement},
-                         timeout=120
+                            f"{API_URL}/generate-testcases",
+                            json={
+                                "requirement": requirement
+                            },
+                            timeout=180
                         )
+
                         if response.status_code == 200:
 
                             result = response.json()["result"]
 
                             st.success("✅ Test Cases Generated")
 
-                            st.write(result)
+                            st.markdown(result)
+
+                            pdf_file = export_to_pdf(
+                                "AI Generated Test Cases",
+                                result
+                            )
+
+                            docx_file = export_to_docx(
+                                "AI Generated Test Cases",
+                                result
+                            )
+                            excel_file = export_to_excel(
+                            "AI Generated Test Cases",
+                            result
+                            )
+
+                            pdf_col, doc_col, excel_col = st.columns(3)
+
+                            with pdf_col:
+
+                                st.download_button(
+                                    "📄 Download PDF",
+                                    data=pdf_file,
+                                    file_name="AI_Test_Cases.pdf",
+                                    mime="application/pdf"
+                                )
+
+                            with doc_col:
+
+                                st.download_button(
+                                    "📝 Download Word",
+                                    data=docx_file,
+                                    file_name="AI_Test_Cases.docx",
+                                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                )
+
+                            with excel_col:
+
+                                st.download_button(
+                                   "📊 Download Excel",
+                                   data=excel_file,
+                                   file_name="AI_Test_Cases.xlsx",
+                                   mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                )
 
                         else:
 
@@ -115,9 +165,9 @@ with tab1:
 
                 st.warning("Please enter a requirement.")
 
-    # --------------------------------------------------
+    # ------------------------------------------------------
     # Generate Playwright Script
-    # --------------------------------------------------
+    # ------------------------------------------------------
 
     with col2:
 
@@ -134,7 +184,7 @@ with tab1:
                             json={
                                 "requirement": requirement
                             },
-                            timeout=120
+                            timeout=180
                         )
 
                         if response.status_code == 200:
@@ -143,7 +193,17 @@ with tab1:
 
                             st.success("✅ Playwright Script Generated")
 
-                            st.code(result, language="python")
+                            st.code(
+                                result,
+                                language="python"
+                            )
+
+                            st.download_button(
+                                "📥 Download Python Script",
+                                data=result,
+                                file_name="generated_playwright.py",
+                                mime="text/x-python"
+                            )
 
                         else:
 
@@ -156,9 +216,7 @@ with tab1:
             else:
 
                 st.warning("Please enter a requirement.")
-
-
-# ==========================================================
+                # ==========================================================
 # TAB 2 - WEBSITE SCANNER
 # ==========================================================
 
@@ -171,45 +229,83 @@ with tab2:
         placeholder="https://example.com"
     )
 
+    # ------------------------------------------------------
+    # Analyze Website
+    # ------------------------------------------------------
+
     if st.button("🔍 Analyze Website"):
 
         if url:
 
             with st.spinner("Scanning Website..."):
 
-                result = scan_website(url)
+                scan_result = scan_website(url)
 
-            st.success("Website Scan Completed")
+            st.success("✅ Website Scan Completed")
 
-            st.json(result)
+            st.json(scan_result)
 
         else:
 
             st.warning("Please enter a website URL.")
+
+    # ------------------------------------------------------
+    # Generate Test Cases From Website
+    # ------------------------------------------------------
 
     if st.button("📝 Generate Test Cases From Website"):
 
         if url:
 
-            with st.spinner("Generating Test Cases..."):
+            with st.spinner("Generating AI Test Cases..."):
 
                 scan_result = scan_website(url)
 
-                result = generate_website_test_cases(scan_result)
+                result = generate_website_test_cases(
+                    scan_result
+                )
 
-            st.success("Generated Successfully")
+            st.success("✅ Test Cases Generated")
 
-            st.write(result)
+            st.markdown(result)
 
-            st.download_button(
-                "📥 Download Test Cases",
-                result,
-                file_name="website_test_cases.txt"
+            pdf_file = export_to_pdf(
+                "Website Test Cases",
+                result
             )
+
+            docx_file = export_to_docx(
+                "Website Test Cases",
+                result
+            )
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+
+                st.download_button(
+                    "📄 Download PDF",
+                    data=pdf_file,
+                    file_name="Website_Test_Cases.pdf",
+                    mime="application/pdf"
+                )
+
+            with col2:
+
+                st.download_button(
+                    "📝 Download Word",
+                    data=docx_file,
+                    file_name="Website_Test_Cases.docx",
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                )
 
         else:
 
             st.warning("Please enter a website URL.")
+
+    # ------------------------------------------------------
+    # Generate Playwright Script
+    # ------------------------------------------------------
 
     if st.button("⚡ Generate Playwright Script From Website"):
 
@@ -224,20 +320,23 @@ with tab2:
                     scan_result
                 )
 
-            st.success("Generated Successfully")
+            st.success("✅ Playwright Script Generated")
 
-            st.code(result, language="python")
+            st.code(
+                result,
+                language="python"
+            )
 
             st.download_button(
-                "📥 Download Script",
-                result,
-                file_name="playwright.py"
+                "📥 Download Python Script",
+                data=result,
+                file_name="website_playwright.py",
+                mime="text/x-python"
             )
 
         else:
 
             st.warning("Please enter a website URL.")
-
 
 # ==========================================================
 # TAB 3 - FAILURE ANALYSIS
@@ -245,29 +344,59 @@ with tab2:
 
 with tab3:
 
-    st.subheader("🐞 Failure Analysis")
+    st.subheader("🐞 AI Failure Analysis")
 
-    log = st.text_area(
-        "Paste Failure Log",
-        height=250
+    failure_log = st.text_area(
+        "Paste Selenium / Playwright / Appium / API Error Log",
+        height=250,
+        placeholder="Paste automation failure logs here..."
     )
 
-    if st.button("Analyze Failure"):
+    if st.button("🔍 Analyze Failure"):
 
-        if log:
+        if failure_log:
 
             with st.spinner("Analyzing Failure..."):
 
-                result = classify_failure(log)
+                result = classify_failure(failure_log)
 
-            st.success("Analysis Completed")
+            st.success("✅ Failure Analysis Completed")
 
-            st.write(result)
+            st.markdown(result)
+
+            pdf_file = export_to_pdf(
+                "Failure Analysis Report",
+                result
+            )
+
+            docx_file = export_to_docx(
+                "Failure Analysis Report",
+                result
+            )
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+
+                st.download_button(
+                    "📄 Download PDF",
+                    data=pdf_file,
+                    file_name="Failure_Analysis_Report.pdf",
+                    mime="application/pdf"
+                )
+
+            with col2:
+
+                st.download_button(
+                    "📝 Download Word",
+                    data=docx_file,
+                    file_name="Failure_Analysis_Report.docx",
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                )
 
         else:
 
             st.warning("Please paste the failure log.")
-
 
 # ==========================================================
 # TAB 4 - TEST STRATEGY
@@ -279,15 +408,23 @@ with tab4:
 
     strategy_requirement = st.text_area(
         "Software Requirement",
-        height=180,
-        placeholder="Example: Build an online banking application."
+        height=200,
+        placeholder="""
+Example:
+Build an Online Banking Application with Login,
+Fund Transfer,
+Transaction History,
+Bill Payments,
+Admin Portal,
+Notification Service.
+"""
     )
 
     if st.button("📋 Generate Test Strategy"):
 
         if strategy_requirement:
 
-            with st.spinner("Generating Test Strategy..."):
+            with st.spinner("Generating AI Test Strategy..."):
 
                 try:
 
@@ -296,7 +433,7 @@ with tab4:
                         json={
                             "requirement": strategy_requirement
                         },
-                        timeout=180
+                        timeout=240
                     )
 
                     if response.status_code == 200:
@@ -307,12 +444,48 @@ with tab4:
 
                         st.markdown(result)
 
-                        st.download_button(
-                            "📥 Download Strategy",
-                            result,
-                            file_name="test_strategy.md",
-                            mime="text/markdown"
+                        # -----------------------------------------
+                        # Export Files
+                        # -----------------------------------------
+
+                        pdf_file = export_to_pdf(
+                            "AI Test Strategy",
+                            result
                         )
+
+                        docx_file = export_to_docx(
+                            "AI Test Strategy",
+                            result
+                        )
+
+                        col1, col2, col3 = st.columns(3)
+
+                        with col1:
+
+                            st.download_button(
+                                "📄 Download PDF",
+                                data=pdf_file,
+                                file_name="AI_Test_Strategy.pdf",
+                                mime="application/pdf"
+                            )
+
+                        with col2:
+
+                            st.download_button(
+                                "📝 Download Word",
+                                data=docx_file,
+                                file_name="AI_Test_Strategy.docx",
+                                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                            )
+
+                        with col3:
+
+                            st.download_button(
+                                "📥 Download Markdown",
+                                data=result,
+                                file_name="AI_Test_Strategy.md",
+                                mime="text/markdown"
+                            )
 
                     else:
 
@@ -326,10 +499,25 @@ with tab4:
 
             st.warning("Please enter a software requirement.")
 
-
 # ==========================================================
 # FOOTER
 # ==========================================================
 
 st.markdown("---")
-st.caption("🚀 Created by Anish Sinha | AI QA Agent")
+
+st.markdown(
+    """
+### 🚀 AI QA Agent Pro
+
+Built with:
+
+- 🐍 Python
+- ⚡ FastAPI
+- 🎨 Streamlit
+- 🤖 Google Gemini AI
+- 🎭 Playwright
+- 🧪 Pytest
+
+**Created by Anish Sinha**
+"""
+)
