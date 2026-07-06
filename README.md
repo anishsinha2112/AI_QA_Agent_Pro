@@ -1,25 +1,63 @@
 # 🤖 AI QA Agent Pro
 
-> **AI-Powered QA Automation Assistant** built with **Python, FastAPI, Streamlit, Playwright, and Google Gemini AI**.
+<div align="center">
 
-AI QA Agent Pro helps QA Engineers, SDETs, and Software Testers accelerate software testing by generating intelligent test artifacts, automation scripts, and failure analysis using Generative AI.
+### 🚀 AI-Powered QA Automation Platform
+
+Generate **Test Cases**, **Playwright Automation Scripts**, **Test Strategies**, **Failure Analysis**, and **Website Test Artifacts** using **Google Gemini AI**.
+
+Built with **Python • FastAPI • Streamlit • Google Gemini AI • Playwright**
+
+---
+
+![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green?logo=fastapi)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-red?logo=streamlit)
+![Google Gemini](https://img.shields.io/badge/Google-Gemini%202.5-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+</div>
+
+---
+
+# 🌐 Live Demo
+
+### Frontend (Streamlit)
+
+https://<YOUR_STREAMLIT_URL>
+
+### Backend API (Render)
+
+https://ai-qa-agent-pro.onrender.com
+
+### Swagger Documentation
+
+https://ai-qa-agent-pro.onrender.com/docs
+
+---
+
+# 📌 Overview
+
+AI QA Agent Pro is an intelligent software testing assistant that helps QA Engineers, Automation Engineers, and SDETs accelerate software testing using Generative AI.
+
+Instead of manually writing test cases, automation scripts, and test strategies, users simply provide a requirement, website URL, or failure log, and the application generates high-quality QA artifacts within seconds.
 
 ---
 
 # 🚀 Features
 
-## ✅ AI Test Case Generator
+## 📝 AI Test Case Generator
 
-Generate comprehensive QA test cases from business requirements.
+Generate detailed QA test cases from business requirements.
 
-**Includes**
+### Includes
 
-* Functional Test Cases
-* Positive Test Scenarios
-* Negative Test Scenarios
-* Boundary Value Analysis
-* Edge Cases
-* Priority Assignment
+- Functional Test Cases
+- Positive Scenarios
+- Negative Scenarios
+- Boundary Value Analysis
+- Edge Cases
+- Priority Assignment
 
 ---
 
@@ -27,122 +65,172 @@ Generate comprehensive QA test cases from business requirements.
 
 Automatically generate Playwright (Python) automation scripts.
 
-Features include:
+Features
 
-* Browser setup
-* Assertions
-* Comments
-* Best practices
-* Ready-to-run Python code
+- Browser Launch
+- Assertions
+- Comments
+- Best Practices
+- Ready-to-run Python Code
 
 ---
 
 ## 🌐 Website URL Scanner
 
-Analyze a website and automatically detect:
+Analyze any website and automatically detect
 
-* Forms
-* Buttons
-* Input Fields
-* Links
+- Forms
+- Buttons
+- Links
+- Input Fields
 
-Generate:
+Generate
 
-* AI Test Cases
-* AI Playwright Automation Scripts
+- Website Test Cases
+- Website Playwright Scripts
 
 ---
 
 ## 🐞 AI Failure Analysis
 
-Analyze automation failures and identify:
+Analyze automation failures and receive
 
-* Root Cause
-* Possible Fixes
-* Debugging Recommendations
-* Technical Explanation
+- Root Cause Analysis
+- Technical Explanation
+- Suggested Fixes
+- Debugging Recommendations
+
+Supports
+
+- Selenium
+- Playwright
+- API Testing
+- Appium
+- Python Tracebacks
 
 ---
 
-## 🤖 Google Gemini AI
+## 📋 AI Test Strategy Generator
 
-Powered by Google's Gemini Large Language Model to transform requirements into actionable QA artifacts.
+Automatically generate complete Test Strategy documents.
+
+Includes
+
+- Project Overview
+- Testing Objectives
+- Test Scope
+- Test Levels
+- Functional Testing
+- API Testing
+- UI Testing
+- Database Testing
+- Security Testing
+- Performance Testing
+- Accessibility Testing
+- Automation Strategy
+- Risk Analysis
+- Entry Criteria
+- Exit Criteria
+- Test Deliverables
+- Test Metrics
 
 ---
 
-# 🏗 Architecture
+# 📄 Export Reports
 
+Every generated artifact can be exported as
+
+- 📄 PDF
+- 📝 Microsoft Word (.docx)
+- 📊 Microsoft Excel (.xlsx)
+- 📋 Markdown (.md)
+
+---
+
+# 🏗 System Architecture
+
+```text
+                     User
+                       │
+                       ▼
+               Streamlit Frontend
+                       │
+                 REST API Requests
+                       │
+                       ▼
+                 FastAPI Backend
+      ┌────────────┬──────────────┬─────────────┐
+      │            │              │             │
+      ▼            ▼              ▼             ▼
+ Test Cases   Playwright     Test Strategy   Failure Analysis
+      │
+      ▼
+ Website Scanner
+      │
+      ▼
+ Google Gemini AI
+      │
+      ▼
+ PDF | Word | Excel Reports
 ```
-                    User
-                      │
-                      ▼
-              Streamlit Frontend
-                      │
-                REST API Calls
-                      │
-                      ▼
-               FastAPI Backend
-          ┌───────────┼───────────┐
-          │           │           │
-          ▼           ▼           ▼
-     Test Generator  Scanner  Failure Analyzer
-                      │
-                      ▼
-                 Google Gemini
-```
 
 ---
 
-# 🛠 Tech Stack
+# 🛠 Technology Stack
 
-### Backend
+## Backend
 
-* FastAPI
-* Python
-* Google Gemini AI
+- Python
+- FastAPI
+- Uvicorn
+- Google Gemini AI
 
-### Frontend
+## Frontend
 
-* Streamlit
+- Streamlit
 
-### Automation
+## Automation
 
-* Playwright
-* Pytest
+- Playwright
+- Pytest
 
-### AI
+## AI
 
-* Google Gemini 2.5 Flash
+- Google Gemini 2.5 Flash
 
-### Other
+## Utilities
 
-* BeautifulSoup
-* Requests
-* Git
-* GitHub
+- BeautifulSoup
+- Requests
+- ReportLab
+- python-docx
+- openpyxl
+
+## Deployment
+
+- Streamlit Cloud
+- Render
 
 ---
 
-# 📁 Project Structure
+# 📂 Project Structure
 
-```
+```text
 AI_QA_Agent_Pro/
 │
 ├── app/
-│   ├── __init__.py
-│   │
-│   ├── backend/
-│   │   ├── __init__.py
-│   │   ├── main.py
-│   │   ├── models.py
-│   │   ├── gemini_client.py
-│   │   ├── generators.py
-│   │   ├── url_scanner.py
-│   │   ├── analyzer.py
-│   │   └── export_utils.py
-│   │
-│   └── frontend/
-│       └── ui.py
+│
+├── backend/
+│   ├── analyzer.py
+│   ├── export_utils.py
+│   ├── generators.py
+│   ├── gemini_client.py
+│   ├── main.py
+│   ├── models.py
+│   └── url_scanner.py
+│
+├── frontend/
+│   └── ui.py
 │
 ├── playwright_tests/
 │
@@ -197,37 +285,39 @@ pip install -r requirements.txt
 
 ---
 
-# 🔑 Configure Gemini API
+# 🔑 Environment Variables
 
-Create the following file:
+Create
 
-```
+```text
 .streamlit/secrets.toml
 ```
 
-Add:
+Add
 
 ```toml
-GEMINI_API_KEY="YOUR_API_KEY"
+GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
+
+API_URL="https://aiappagentpro-cmybkzrcj2rkrmkskhxho3.streamlit.app/"
 ```
 
 ---
 
 # ▶ Running the Application
 
-## Start Backend
+## Start FastAPI Backend
 
 ```bash
 uvicorn app.backend.main:app --reload
 ```
 
-Backend:
+Backend
 
 ```
 http://127.0.0.1:8000
 ```
 
-Swagger Documentation:
+Swagger
 
 ```
 http://127.0.0.1:8000/docs
@@ -235,13 +325,13 @@ http://127.0.0.1:8000/docs
 
 ---
 
-## Start Frontend
+## Start Streamlit Frontend
 
 ```bash
 python -m streamlit run app/frontend/ui.py
 ```
 
-Frontend:
+Frontend
 
 ```
 http://localhost:8501
@@ -249,86 +339,103 @@ http://localhost:8501
 
 ---
 
-# 📊 Current Backend APIs
+# 🔌 API Endpoints
 
-| Method | Endpoint               | Description                |
-| ------ | ---------------------- | -------------------------- |
-| GET    | `/`                    | Health Check               |
-| POST   | `/generate-testcases`  | Generate AI Test Cases     |
-| POST   | `/generate-playwright` | Generate Playwright Script |
-
----
-
-# 💡 Example
-
-## Requirement
-
-```
-Login page with Email, Password and Login button.
-```
-
-AI QA Agent Pro generates:
-
-* Detailed QA Test Cases
-* Playwright Automation Script
-* Testing Recommendations
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| GET | / | Health Check |
+| POST | /generate-testcases | Generate AI Test Cases |
+| POST | /generate-playwright | Generate Playwright Script |
+| POST | /generate-test-strategy | Generate AI Test Strategy |
 
 ---
 
 # 📈 Proof of Concept (POC)
 
-The application has been validated against real-world QA scenarios.
-
-### Results
-
-| Module                  | Status |
-| ----------------------- | ------ |
+| Module | Status |
+|---------|--------|
 | AI Test Case Generation | ✅ PASS |
-| Playwright Generation   | ✅ PASS |
-| Failure Analysis        | ✅ PASS |
-| FastAPI Integration     | ✅ PASS |
-| Streamlit Integration   | ✅ PASS |
+| Playwright Generator | ✅ PASS |
+| Website Scanner | ✅ PASS |
+| Failure Analysis | ✅ PASS |
+| AI Test Strategy | ✅ PASS |
+| PDF Export | ✅ PASS |
+| Word Export | ✅ PASS |
+| Excel Export | ✅ PASS |
+| FastAPI Backend | ✅ PASS |
+| Streamlit Frontend | ✅ PASS |
+| Render Deployment | ✅ PASS |
 
 ---
 
-# 🚀 Upcoming Features
+# 🚀 Roadmap
 
-* API Test Case Generator (Swagger/OpenAPI)
-* Selenium Java Generator
-* Accessibility Testing (WCAG)
-* AI Test Strategy Generator
-* AI Bug Report Generator
-* Excel Export
-* PDF Reports
-* User Authentication (JWT)
-* PostgreSQL Database
-* Project History
-* Docker Support
-* CI/CD Pipeline
-* Cloud Deployment (Azure/Render)
+### Completed
+
+- ✅ AI Test Case Generator
+- ✅ Playwright Generator
+- ✅ Website Scanner
+- ✅ Failure Analysis
+- ✅ AI Test Strategy Generator
+- ✅ PDF Export
+- ✅ Word Export
+- ✅ Excel Export
+- ✅ FastAPI Backend
+- ✅ Streamlit Frontend
+- ✅ Render Deployment
+
+---
+
+### Planned
+
+- 🤖 AI QA Assistant Chat
+- 📸 Screenshot Analysis (Gemini Vision)
+- 🐞 AI Bug Report Generator
+- 🔗 Jira Integration
+- 📊 Dashboard & Analytics
+- 🔐 User Authentication
+- 🗄 PostgreSQL
+- 🐳 Docker Support
+- ⚙ GitHub Actions CI/CD
 
 ---
 
 # 👨‍💻 Author
 
-**Anish Sinha**
+## Anish Sinha
 
-QA Automation Engineer | Python | Playwright | FastAPI | AI-Powered Testing
+QA Automation Engineer
 
-GitHub:
+Skills
+
+- Python
+- FastAPI
+- Streamlit
+- Playwright
+- Selenium
+- API Testing
+- Google Gemini AI
+
+GitHub
 
 https://github.com/anishsinha2112
+
+LinkedIn
+
+(Add your LinkedIn profile URL)
 
 ---
 
 # ⭐ Support
 
-If you found this project useful:
+If you found this project useful
 
-⭐ Star the repository
+⭐ Star this repository
 
-🍴 Fork the project
+🍴 Fork this repository
 
-💡 Contribute with ideas and improvements
+💡 Open Issues & Feature Requests
 
-Happy Testing! 🚀
+---
+
+## Happy Testing 🚀
