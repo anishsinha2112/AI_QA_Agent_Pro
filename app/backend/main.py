@@ -1,10 +1,14 @@
 from fastapi import FastAPI
 
-from .models import RequirementRequest
+from .models import (
+    RequirementRequest,
+    ChatRequest
+)
 from .generators import (
     generate_test_cases,
     generate_playwright_script,
-    generate_test_strategy
+    generate_test_strategy,
+    chat_with_ai
 )
 
 print("🚀 LOADING NEW MAIN.PY")
@@ -65,6 +69,20 @@ def generate_pw(request: RequirementRequest):
 def generate_strategy(request: RequirementRequest):
 
     result = generate_test_strategy(request.requirement)
+
+    return {
+        "status": "success",
+        "result": result
+    }
+
+# ==========================================================
+# AI QA Assistant
+# ==========================================================
+
+@app.post("/chat")
+def chat(request: ChatRequest):
+
+    result = chat_with_ai(request.question)
 
     return {
         "status": "success",

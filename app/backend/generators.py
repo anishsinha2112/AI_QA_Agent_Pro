@@ -181,3 +181,22 @@ Return the response in well-formatted Markdown.
 """
 
     return call_gemini(prompt)
+
+def chat_with_ai(question):
+
+    prompt = f"""
+You are an Expert QA Automation Engineer.
+
+Question:
+{question}
+
+Provide:
+1. Explanation
+2. Best Practices
+3. Example
+4. Conclusion
+
+Return the response in Markdown.
+"""
+
+    return call_gemini(prompt)

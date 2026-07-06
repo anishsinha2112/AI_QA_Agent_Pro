@@ -57,11 +57,12 @@ st.caption(
 # TABS
 # ==========================================================
 
-tab1, tab2, tab3, tab4 = st.tabs([
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📝 Test Generation",
-    "🌐 URL Scanner",
+    "🌐 Website Scanner",
     "🐞 Failure Analysis",
-    "📋 Test Strategy"
+    "📋 Test Strategy",
+    "🤖 AI QA Assistant"
 ])
 
 # ==========================================================
@@ -498,6 +499,62 @@ Notification Service.
         else:
 
             st.warning("Please enter a software requirement.")
+
+
+
+
+
+# ==========================================================
+# TAB 5 - AI QA Assistant
+# ==========================================================
+
+with tab5:
+
+    st.subheader("🤖 AI QA Assistant")
+
+    st.write(
+        "Ask anything related to QA, Selenium, Playwright, APIs, SQL, Python, Appium, Test Strategy, CI/CD, or software testing."
+    )
+
+    question = st.text_area(
+        "Ask Your Question",
+        height=180,
+        placeholder="Example: Explain Selenium TimeoutException."
+    )
+
+    if st.button("🤖 Ask AI"):
+
+        if question.strip():
+
+            with st.spinner("Thinking..."):
+
+                try:
+
+                    response = requests.post(
+                        f"{API_URL}/chat",
+                        json={"question": question},
+                        timeout=180
+                    )
+
+                    if response.status_code == 200:
+
+                        result = response.json()["result"]
+
+                        st.success("✅ Response Generated")
+
+                        st.markdown(result)
+
+                    else:
+
+                        st.error(response.text)
+
+                except Exception as e:
+
+                    st.error(f"Backend Error\n\n{e}")
+
+        else:
+
+            st.warning("Please enter a question.")
 
 # ==========================================================
 # FOOTER
