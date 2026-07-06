@@ -24,7 +24,7 @@ Built with **Python • FastAPI • Streamlit • Google Gemini AI • Playwrigh
 
 ### Frontend (Streamlit)
 
-https://<YOUR_STREAMLIT_URL>
+https://aiappagentpro-cmybkzrcj2rkrmkskhxho3.streamlit.app/
 
 ### Backend API (Render)
 
@@ -298,7 +298,7 @@ Add
 ```toml
 GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
 
-API_URL="https://aiappagentpro-cmybkzrcj2rkrmkskhxho3.streamlit.app/"
+API_URL="https://ai-qa-agent-pro.onrender.com"
 ```
 
 ---
@@ -420,9 +420,7 @@ GitHub
 
 https://github.com/anishsinha2112
 
-LinkedIn
 
-(Add your LinkedIn profile URL)
 
 ---
 
