@@ -13,29 +13,66 @@ from .gemini_client import client
 def analyze_screenshot(image_path: str):
 
     prompt = """
-You are a Senior QA Engineer.
+You are a Senior QA Automation Engineer with 15 years of experience.
 
-Analyze this UI screenshot.
+Analyze this application screenshot.
 
-Provide the report in the following format:
+Generate a professional QA report.
+
+Include the following sections.
 
 # UI Summary
 
-# Functional Observations
+Provide a brief description.
+
+# Functional Components
+
+Identify all visible UI controls.
 
 # UI Issues
 
+Mention alignment, spacing, fonts, colors, consistency.
+
 # Accessibility Issues
+
+Check for:
+
+- Missing labels
+- Low contrast
+- Small text
+- Keyboard accessibility concerns
+- WCAG observations
 
 # UX Improvements
 
-# Test Scenarios
+Suggest improvements.
+
+# Functional Test Scenarios
+
+Generate useful manual test cases.
 
 # Automation Opportunities
 
-# Overall QA Recommendation
+Suggest:
 
-Return the response in Markdown.
+- Playwright
+- Selenium
+- API Testing
+- Accessibility Automation
+
+# Risk Assessment
+
+High
+
+Medium
+
+Low
+
+# Overall Recommendation
+
+Summarize the QA findings.
+
+Return Markdown only.
 """
 
     mime_type, _ = mimetypes.guess_type(image_path)

@@ -460,6 +460,11 @@ Notification Service.
                             result
                         )
 
+                        excel_file = export_to_excel(
+                          "Screenshot Analysis",
+                           result
+                        )
+
                         col1, col2, col3 = st.columns(3)
 
                         with col1:
@@ -476,17 +481,17 @@ Notification Service.
                             st.download_button(
                                 "📝 Download Word",
                                 data=docx_file,
-                                file_name="AI_Test_Strategy.docx",
+                                file_name="Screenshot_Analysis.docx",
                                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                             )
 
                         with col3:
 
                             st.download_button(
-                                "📥 Download Markdown",
-                                data=result,
-                                file_name="AI_Test_Strategy.md",
-                                mime="text/markdown"
+                                "📥 Download Excel",
+                                data=excel_file,
+                                file_name="Screenshot_Analysis.xlsx",
+                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             )
 
                     else:
@@ -583,7 +588,7 @@ with tab6:
 
         if st.button("🔍 Analyze Screenshot"):
 
-            with st.spinner("Analyzing Screenshot..."):
+            with st.spinner("🔍 AI is analyzing the screenshot..."):
 
                 try:
 
@@ -607,7 +612,59 @@ with tab6:
 
                         st.success("✅ Screenshot Analysis Completed")
 
+                        st.divider()
+
+                        st.subheader("🤖 AI Analysis Report")
+
                         st.markdown(result)
+
+                        # -----------------------------------------
+                        # Export Files
+                        # -----------------------------------------
+
+                        pdf_file = export_to_pdf(
+                            "Screenshot Analysis",
+                            result
+                        )
+
+                        docx_file = export_to_docx(
+                            "Screenshot Analysis",
+                            result
+                        )
+
+                        excel_file = export_to_excel(
+                            "Screenshot Analysis",
+                            result
+                        )
+
+                        col1, col2, col3 = st.columns(3)
+
+                        with col1:
+
+                            st.download_button(
+                                "📄 Download PDF",
+                                data=pdf_file,
+                                file_name="Screenshot_Analysis.pdf",
+                                mime="application/pdf"
+                            )
+
+                        with col2:
+
+                            st.download_button(
+                                "📝 Download Word",
+                                data=docx_file,
+                                file_name="Screenshot_Analysis.docx",
+                                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                            )
+
+                        with col3:
+
+                            st.download_button(
+                                "📊 Download Excel",
+                                data=excel_file,
+                                file_name="Screenshot_Analysis.xlsx",
+                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            )
 
                     else:
 
