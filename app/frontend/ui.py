@@ -57,12 +57,13 @@ st.caption(
 # TABS
 # ==========================================================
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "📝 Test Generation",
     "🌐 Website Scanner",
     "🐞 Failure Analysis",
     "📋 Test Strategy",
-    "🤖 AI QA Assistant"
+    "🤖 AI QA Assistant",
+    "📷 Screenshot Analyzer"
 ])
 
 # ==========================================================
@@ -555,6 +556,66 @@ with tab5:
         else:
 
             st.warning("Please enter a question.")
+
+
+
+
+# ==========================================================
+# TAB 6 - Screenshot Analyzer
+# ==========================================================
+
+with tab6:
+
+    st.subheader("📷 AI Screenshot Analyzer")
+
+    uploaded_file = st.file_uploader(
+        "Upload a UI Screenshot",
+        type=["png", "jpg", "jpeg"]
+    )
+
+    if uploaded_file:
+
+        st.image(
+            uploaded_file,
+            caption="Uploaded Screenshot",
+            use_container_width=True
+        )
+
+        if st.button("🔍 Analyze Screenshot"):
+
+            with st.spinner("Analyzing Screenshot..."):
+
+                try:
+
+                    files = {
+                        "file": (
+                            uploaded_file.name,
+                            uploaded_file.getvalue(),
+                            uploaded_file.type,
+                        )
+                    }
+
+                    response = requests.post(
+                        f"{API_URL}/analyze-image",
+                        files=files,
+                        timeout=300,
+                    )
+
+                    if response.status_code == 200:
+
+                        result = response.json()["result"]
+
+                        st.success("✅ Screenshot Analysis Completed")
+
+                        st.markdown(result)
+
+                    else:
+
+                        st.error(response.text)
+
+                except Exception as e:
+
+                    st.error(f"Error:\n{e}")
 
 # ==========================================================
 # FOOTER
