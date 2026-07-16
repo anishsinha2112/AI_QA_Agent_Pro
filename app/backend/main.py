@@ -4,11 +4,12 @@ UPLOAD_DIR = "uploads"
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-from fastapi import FastAPI
-
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Form
 
 from .image_analyzer import analyze_screenshot
+from .bug_report import generate_bug_report
+
+
 
 
 
@@ -106,7 +107,10 @@ def chat(request: ChatRequest):
 # ==========================================================
 
 @app.post("/analyze-image")
-async def analyze_image(file: UploadFile = File(...)):
+async def analyze_image(
+    file: UploadFile = File(...),
+    context: str = Form("")
+):
 
     file_path = os.path.join(
         UPLOAD_DIR,
@@ -116,9 +120,54 @@ async def analyze_image(file: UploadFile = File(...)):
     with open(file_path, "wb") as f:
         f.write(await file.read())
 
-    result = analyze_screenshot(file_path)
+    result = analyze_screenshot(
+        file_path,
+        context
+    )
 
     return {
         "status": "success",
         "result": result
     }
+
+# ==========================================================
+# AI Bug Report Generator
+# ==========================================================
+
+@app.post("/generate-bug-report")
+async def generate_bug(
+    file: UploadFile = File(...),
+    error_log: str = Form(""),
+    requirement: str = Form("")
+):
+
+    try:
+
+        file_path = os.path.join(
+            UPLOAD_DIR,
+            file.filename
+        )
+
+        with open(file_path, "wb") as f:
+            f.write(await file.read())
+
+        result = generate_bug_report(
+            file_path,
+            error_log,
+            requirement
+        )
+
+        return {
+            "status": "success",
+            "result": result
+        }
+
+    except Exception as e:
+
+        import traceback
+
+        return {
+            "status": "error",
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        }

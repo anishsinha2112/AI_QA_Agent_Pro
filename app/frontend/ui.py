@@ -57,13 +57,14 @@ st.caption(
 # TABS
 # ==========================================================
 
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "📝 Test Generation",
     "🌐 Website Scanner",
     "🐞 Failure Analysis",
     "📋 Test Strategy",
     "🤖 AI QA Assistant",
-    "📷 Screenshot Analyzer"
+    "📷 Screenshot Analyzer",
+    "🐛 Bug Report Generator"
 ])
 
 # ==========================================================
@@ -573,9 +574,46 @@ with tab6:
 
     st.subheader("📷 AI Screenshot Analyzer")
 
+    st.info(
+        """
+Upload a UI screenshot and optionally provide additional QA context.
+
+Examples:
+• Requirement
+• Steps Performed
+• Expected Result
+• Actual Result
+• Error Messages
+• Notes
+"""
+    )
+
     uploaded_file = st.file_uploader(
         "Upload a UI Screenshot",
         type=["png", "jpg", "jpeg"]
+    )
+
+    context = st.text_area(
+        "📝 Additional QA Context (Optional)",
+        height=180,
+        placeholder="""
+Feature:
+Create New Group
+
+Steps Performed:
+1. Clicked Create New Group
+2. Entered Group Name
+3. Clicked Save
+
+Expected Result:
+Group should be created successfully.
+
+Actual Result:
+Nothing happens after clicking Save.
+
+Additional Notes:
+No error message displayed.
+"""
     )
 
     if uploaded_file:
@@ -600,9 +638,14 @@ with tab6:
                         )
                     }
 
+                    data = {
+                        "context": context
+                    }
+
                     response = requests.post(
                         f"{API_URL}/analyze-image",
                         files=files,
+                        data=data,
                         timeout=300,
                     )
 
@@ -617,10 +660,6 @@ with tab6:
                         st.subheader("🤖 AI Analysis Report")
 
                         st.markdown(result)
-
-                        # -----------------------------------------
-                        # Export Files
-                        # -----------------------------------------
 
                         pdf_file = export_to_pdf(
                             "Screenshot Analysis",
@@ -672,7 +711,147 @@ with tab6:
 
                 except Exception as e:
 
-                    st.error(f"Error:\n{e}")
+                    st.error(f"Backend Error\n\n{e}")
+
+# ==========================================================
+# TAB 7 - Bug Report Generator
+# ==========================================================
+
+with tab7:
+
+    st.subheader("🐛 AI Bug Report Generator")
+
+    uploaded_bug_image = st.file_uploader(
+        "Upload Bug Screenshot",
+        type=["png", "jpg", "jpeg"],
+        key="bug_report_image"
+    )
+
+    bug_requirement = st.text_area(
+        "Requirement",
+        height=120,
+        placeholder="Describe the expected functionality...",
+        key="bug_requirement"
+    )
+
+    bug_log = st.text_area(
+        "Error Log",
+        height=180,
+        placeholder="Paste automation logs or error messages...",
+        key="bug_log"
+    )
+
+    if uploaded_bug_image:
+
+        st.image(
+            uploaded_bug_image,
+            caption="Uploaded Screenshot",
+            use_container_width=True
+        )
+
+    if st.button(
+        "🐛 Generate Bug Report",
+        key="generate_bug_report"
+    ):
+
+        if uploaded_bug_image:
+
+            with st.spinner("Generating AI Bug Report..."):
+
+                try:
+
+                    files = {
+                        "file": (
+                            uploaded_bug_image.name,
+                            uploaded_bug_image.getvalue(),
+                            uploaded_bug_image.type,
+                        )
+                    }
+
+                    data = {
+                        "requirement": bug_requirement,
+                        "error_log": bug_log,
+                    }
+
+                    response = requests.post(
+                        f"{API_URL}/generate-bug-report",
+                        files=files,
+                        data=data,
+                        timeout=300,
+                    )
+
+                    if response.status_code == 200:
+
+                        result = response.json()["result"]
+
+                        st.success("✅ Bug Report Generated")
+
+                        st.divider()
+
+                        st.subheader("🐛 AI Bug Report")
+
+                        st.markdown(result)
+
+                        # --------------------------------------------------
+                        # Export Files
+                        # --------------------------------------------------
+
+                        pdf_file = export_to_pdf(
+                            "AI Bug Report",
+                            result
+                        )
+
+                        docx_file = export_to_docx(
+                            "AI Bug Report",
+                            result
+                        )
+
+                        excel_file = export_to_excel(
+                            "AI Bug Report",
+                            result
+                        )
+
+                        col1, col2, col3 = st.columns(3)
+
+                        with col1:
+
+                            st.download_button(
+                                "📄 Download PDF",
+                                data=pdf_file,
+                                file_name="AI_Bug_Report.pdf",
+                                mime="application/pdf"
+                            )
+
+                        with col2:
+
+                            st.download_button(
+                                "📝 Download Word",
+                                data=docx_file,
+                                file_name="AI_Bug_Report.docx",
+                                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                            )
+
+                        with col3:
+
+                            st.download_button(
+                                "📊 Download Excel",
+                                data=excel_file,
+                                file_name="AI_Bug_Report.xlsx",
+                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            )
+
+                    else:
+
+                        st.error(response.text)
+                    
+
+                except Exception as e:
+
+                    st.error(f"Backend Error\n\n{e}")
+
+        else:
+
+            st.warning("Please upload a screenshot.")
 
 # ==========================================================
 # FOOTER
